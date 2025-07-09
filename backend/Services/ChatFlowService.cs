@@ -5,15 +5,49 @@ namespace chatbot.Services
 {
     public class ChatFlowService
     {
+        private readonly Dictionary<string, int> _errosSeguidos = new();
+
         public Message GenerateBotResponse(string user, string userMessage)
         {
             var intent = GetIntent(userMessage.ToLowerInvariant());
-            var response = GetResponseForIntent(intent);
+
+            // Se não entendeu a intenção
+            if (intent == "unknown")
+            {
+                if (!_errosSeguidos.ContainsKey(user))
+                    _errosSeguidos[user] = 0;
+
+                _errosSeguidos[user]++;
+
+                if (_errosSeguidos[user] >= 3)
+                {
+                    _errosSeguidos[user] = 0; // zera contador
+
+                    return new Message
+                    {
+                        User = "Bot",
+                        Text = "Encaminhando você para o suporte humano...",
+                        Origin = "bot",
+                        Intent = "redirecionar_suporte"
+                    };
+                }
+
+                return new Message
+                {
+                    User = "Bot",
+                    Text = "Desculpe, não entendi sua solicitação. Pode reformular?",
+                    Origin = "bot",
+                    Intent = "unknown"
+                };
+            }
+
+            // Se entendeu, zera contador
+            _errosSeguidos[user] = 0;
 
             return new Message
             {
                 User = "Bot",
-                Text = response,
+                Text = GetResponseForIntent(intent),
                 Origin = "bot",
                 Intent = intent
             };

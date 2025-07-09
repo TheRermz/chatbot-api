@@ -9,6 +9,7 @@ export const Chat = () => {
     { id: 2, text: "Preciso de ajuda com meu cadastro", origin: "user" },
   ]);
   const [newMessage, setNewMessage] = useState("");
+  const [atendente, setAtendente] = useState("Bot");
 
   const connectionRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -36,6 +37,10 @@ export const Chat = () => {
         origin: message.user?.toLowerCase() === "bot" ? "bot" : "user",
       };
 
+      if (message.intent === "redirecionar_suporte") {
+        setAtendente("Atendente");
+      }
+
       setMessages((prev) => [...prev, botMsg]);
     });
 
@@ -59,6 +64,10 @@ export const Chat = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
+      <div className={styles.chatHeader}>
+        <strong>{atendente}</strong> está atendendo você
+      </div>
+
       <form
         className={styles.inputArea}
         onSubmit={(e) => {
