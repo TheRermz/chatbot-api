@@ -1,7 +1,22 @@
 using chatbot.Hubs;
 using chatbot.Services;
+using chatbot.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
+
+//conn str
+
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+var dbName = Environment.GetEnvironmentVariable("DB_DATABASE");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPass = Environment.GetEnvironmentVariable("DB_PASSWD");
+
+var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPass}";
+
 
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +43,11 @@ builder.Services.AddSingleton<ChatFlowService>(); // Vamos criar esse já já
 
 //Injeção de Controllers
 builder.Services.AddControllers();
+
+//Carrega o banco de dados
+builder.Services.AddDbContext<ChatbotDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 
 var app = builder.Build();
 
