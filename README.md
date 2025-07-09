@@ -82,7 +82,7 @@ chatbot/
 
 ## Diagramas
 
-Consulte os [docs/diagramas](docs/diagramas.md) para ver os diagramas de fluxo, ER e classes.
+Consulte os [docs/diagramas.md](docs/diagramas.md) para ver os diagramas de fluxo, ER e classes.
 
 ---
 
