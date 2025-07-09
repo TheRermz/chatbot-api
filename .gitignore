@@ -36,22 +36,31 @@ secrets.json
 .env
 
 # -----------------------------
-# Node.js (React Frontend)
+# Vite + React + TypeScript (Frontend)
 # -----------------------------
 node_modules/
-build/
 dist/
+.vite/
 .cache/
-.npm/
-.yarn/
-.yarn-cache/
-.pnp.*
-.env*
-.env.local
-.env.development
-.env.test
-.env.production
+*.log
 
-# OS junk
+# Vite environment files
+.env*
+!.env.example
+
+# OS-specific files
 .DS_Store
 Thumbs.db
+
+# IDE/editor junk
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+
+# JetBrains (WebStorm, Rider)
+.idea/
+
+# VSCode settings (opcional)
+.vscode/
