@@ -4,7 +4,7 @@ namespace chatbot.Models
 {
     public class Message
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public required string User { get; set; }
         public required string Text { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
