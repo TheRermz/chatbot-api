@@ -1,0 +1,57 @@
+# -----------------------------
+# .NET (ASP.NET Core Web API)
+# -----------------------------
+bin/
+obj/
+*.user
+*.rsuser
+*.suo
+*.userprefs
+*.csproj.user
+*.dbmdl
+*.pdb
+*.cache/
+*.log
+*.vs/
+*.vscode/
+*.swp
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Dotnet secrets
+secrets.json
+
+# Publish
+/publish/
+/*.PublishProfiles/
+
+# Logs
+/log/
+/logs/
+*.log
+
+# dotenv
+.env
+
+# -----------------------------
+# Node.js (React Frontend)
+# -----------------------------
+node_modules/
+build/
+dist/
+.cache/
+.npm/
+.yarn/
+.yarn-cache/
+.pnp.*
+.env*
+.env.local
+.env.development
+.env.test
+.env.production
+
+# OS junk
+.DS_Store
+Thumbs.db
