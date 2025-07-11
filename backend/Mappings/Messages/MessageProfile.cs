@@ -14,6 +14,7 @@ namespace chatbot.Mappings.Messages
                 .ForMember(dest => dest.Timestamp, opt => opt.Ignore())
                 .ForMember(dest => dest.Origin, opt => opt.MapFrom(src => "user"))
                 .ForMember(dest => dest.Intent, opt => opt.MapFrom(src => "unknown"));
+            CreateMap<Message, MessageReadDto>();
         }
     }
 }
