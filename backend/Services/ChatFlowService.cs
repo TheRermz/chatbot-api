@@ -7,25 +7,25 @@ namespace chatbot.Services
     {
         private readonly Dictionary<string, int> _errosSeguidos = new();
 
-        public Message GenerateBotResponse(string user, string userMessage)
+        public Message GenerateBotResponse(User user, string userMessage)
         {
             var intent = GetIntent(userMessage.ToLowerInvariant());
 
             // Se não entendeu a intenção
             if (intent == "unknown")
             {
-                if (!_errosSeguidos.ContainsKey(user))
-                    _errosSeguidos[user] = 0;
+                if (!_errosSeguidos.ContainsKey(user.Username))
+                    _errosSeguidos[user.Username] = 0;
 
-                _errosSeguidos[user]++;
+                _errosSeguidos[user.Username]++;
 
-                if (_errosSeguidos[user] >= 3)
+                if (_errosSeguidos[user.Username] >= 3)
                 {
-                    _errosSeguidos[user] = 0; // zera contador
+                    _errosSeguidos[user.Username] = 0; // zera contador
 
                     return new Message
                     {
-                        User = "Bot",
+                        User = user,
                         Text = "Encaminhando você para o suporte humano...",
                         Origin = "bot",
                         Intent = "redirecionar_suporte"
@@ -34,7 +34,7 @@ namespace chatbot.Services
 
                 return new Message
                 {
-                    User = "Bot",
+                    User = user,
                     Text = "Desculpe, não entendi sua solicitação. Pode reformular?",
                     Origin = "bot",
                     Intent = "unknown"
@@ -42,11 +42,11 @@ namespace chatbot.Services
             }
 
             // Se entendeu, zera contador
-            _errosSeguidos[user] = 0;
+            _errosSeguidos[user.Username] = 0;
 
             return new Message
             {
-                User = "Bot",
+                User = user,
                 Text = GetResponseForIntent(intent),
                 Origin = "bot",
                 Intent = intent

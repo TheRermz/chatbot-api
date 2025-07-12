@@ -8,6 +8,7 @@ namespace chatbot.Data
         public ChatbotDbContext(DbContextOptions<ChatbotDbContext> options) : base(options) { }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -15,12 +16,35 @@ namespace chatbot.Data
 
             modelBuilder.Entity<Message>(entity =>
             {
-                entity.HasKey(m => m.Id);
-                entity.Property(m => m.User).IsRequired();
-                entity.Property(m => m.Text).IsRequired();
-                entity.Property(m => m.Origin).IsRequired();
-                entity.Property(m => m.Intent);
-                entity.Property(m => m.Timestamp).HasDefaultValueSql("NOW()");
+                // USER
+                modelBuilder.Entity<User>()
+                    .HasKey(u => u.Id);
+
+                modelBuilder.Entity<User>()
+                    .Property(u => u.Id)
+                    .ValueGeneratedOnAdd();
+
+                modelBuilder.Entity<User>()
+                    .HasIndex(u => u.Username)
+                    .IsUnique();
+
+                // MESSAGE
+                modelBuilder.Entity<Message>()
+                    .HasKey(m => m.Id);
+
+                modelBuilder.Entity<Message>()
+                    .Property(m => m.Id)
+                    .ValueGeneratedOnAdd();
+
+                modelBuilder.Entity<Message>()
+                    .Property(m => m.Timestamp)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                modelBuilder.Entity<Message>()
+                    .HasOne(m => m.User)
+                    .WithMany(u => u.Messages)
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
